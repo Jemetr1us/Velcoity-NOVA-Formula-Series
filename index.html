@@ -47,9 +47,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .page{display:none;min-height:calc(100vh - 52px);}
 .page.active{display:block;}
 
-/* HOME HERO */
-.home-hero{background:var(--bg2);padding:48px 32px 40px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
-.home-hero::before{content:'';position:absolute;top:-60px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,24,109,.12) 0%,transparent 65%);pointer-events:none;}
+/* HOME HERO — full redesign: diagonal split stage, layered outline title, next-race card, ticker */
 .hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--vnfs-pink);margin-bottom:10px;}
 .hero-h1{font-size:clamp(2.2rem,5vw,4rem);font-weight:900;line-height:.95;letter-spacing:-.03em;color:#fff;margin-bottom:14px;}
 .hero-h1 span{background:var(--vnfs-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -59,10 +57,59 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .btn-primary:hover{opacity:.87;}
 .btn-secondary{height:36px;padding:0 20px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
 .btn-secondary:hover{background:var(--surface);color:#fff;}
-.hero-stats{display:flex;gap:2px;margin-top:32px;}
 .hs-box{background:var(--surface);border:1px solid var(--border);padding:14px 20px;flex:1;max-width:130px;}
 .hs-num{font-size:1.6rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-.02em;}
 .hs-lbl{font-size:9.5px;font-weight:600;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-top:3px;}
+
+@keyframes vheroPulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:.8;transform:scale(1.05);}}
+@keyframes vheroIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes vheroTicker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes vheroCountPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+.vhero{position:relative;background:#000;overflow:hidden;border-bottom:1px solid var(--border);}
+.vhero-stripes{position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0 2px,transparent 2px 34px);pointer-events:none;}
+.vhero-glow{position:absolute;top:-140px;left:-100px;width:520px;height:520px;background:radial-gradient(circle,rgba(232,24,109,.4) 0%,transparent 68%);filter:blur(10px);pointer-events:none;animation:vheroPulse 3.4s ease-in-out infinite;}
+.vhero-glow2{position:absolute;bottom:-160px;right:-60px;width:460px;height:460px;background:radial-gradient(circle,rgba(124,58,237,.32) 0%,transparent 68%);filter:blur(10px);pointer-events:none;animation:vheroPulse 3.4s ease-in-out infinite 1.2s;}
+.vhero-body{position:relative;z-index:1;display:grid;grid-template-columns:1.5fr 1fr;gap:36px;padding:56px 32px 0;align-items:end;}
+.vhero-tag-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;opacity:0;animation:vheroIn .6s ease forwards .05s;}
+.vhero-tag{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#000;background:var(--vnfs-grad);padding:5px 10px;border-radius:3px;}
+.vhero-live{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);}
+.vhero-live i{width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;animation:vheroCountPulse 1.4s ease infinite;}
+.vhero-title{font-family:'Inter',sans-serif;font-weight:900;letter-spacing:-.04em;line-height:.86;margin:0 0 18px;position:relative;opacity:0;animation:vheroIn .7s ease forwards .15s;}
+.vhero-title .l1{display:block;font-size:clamp(2.6rem,7vw,5.2rem);color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.9);}
+.vhero-title .l2{display:block;font-size:clamp(2.6rem,7vw,5.2rem);background:var(--vnfs-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:-.08em;}
+.vhero-desc{font-size:13px;color:var(--text2);line-height:1.7;max-width:420px;margin-bottom:26px;opacity:0;animation:vheroIn .7s ease forwards .28s;}
+.vhero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px;opacity:0;animation:vheroIn .7s ease forwards .4s;}
+.vhero-btn{height:42px;padding:0 22px;border-radius:3px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:8px;transition:all .18s;border:none;}
+.vhero-btn.primary{background:var(--vnfs-grad);color:#fff;}
+.vhero-btn.primary:hover{transform:translateX(3px);}
+.vhero-btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25);}
+.vhero-btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.06);}
+
+.vhero-card{background:rgba(255,255,255,.035);border:1px solid var(--border2);border-radius:10px;padding:20px;margin-bottom:24px;backdrop-filter:blur(6px);opacity:0;animation:vheroIn .7s ease forwards .3s;}
+.vhero-card-lbl{font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--vnfs-pink);margin-bottom:12px;}
+.vhero-card-race{font-size:1.3rem;font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:4px;}
+.vhero-card-circuit{font-size:11.5px;color:var(--text3);margin-bottom:16px;}
+.vhero-countdown{display:flex;gap:8px;}
+.vc-box{flex:1;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:6px;padding:8px 4px;text-align:center;}
+.vc-num{font-size:1.15rem;font-weight:900;color:#fff;line-height:1;}
+.vc-lbl{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:3px;}
+.vhero-stat-row{display:flex;gap:2px;opacity:0;animation:vheroIn .7s ease forwards .5s;}
+.vhero-stat{flex:1;border-left:2px solid var(--vnfs-pink);padding:2px 0 2px 10px;}
+.vhero-stat-num{font-size:1.15rem;font-weight:900;color:#fff;letter-spacing:-.02em;}
+.vhero-stat-lbl{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+
+.vhero-marquee{position:relative;z-index:1;margin-top:40px;border-top:1px solid var(--border);overflow:hidden;white-space:nowrap;background:rgba(255,255,255,.02);}
+.vhero-marquee-track{display:inline-flex;animation:vheroTicker 26s linear infinite;padding:12px 0;}
+.vhero-marquee-track span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:0 22px;border-right:1px solid var(--border2);}
+.vhero-marquee-track span b{color:#fff;}
+
+@media (max-width:860px){
+  .vhero-body{grid-template-columns:1fr;padding:40px 20px 0;gap:24px;}
+  .vhero-title .l1,.vhero-title .l2{font-size:clamp(2.2rem,11vw,3.4rem);}
+  .vhero-actions{margin-bottom:28px;}
+}
+
 
 /* HOME: UPCOMING */
 .home-next{padding:24px 32px;}
@@ -756,12 +803,11 @@ body.admin-active .editable-hint{display:block;}
   }
 
   /* ── Home hero ── */
-  .home-hero{padding:28px 16px 24px;}
-  .home-hero h1{font-size:clamp(1.4rem,7vw,2rem);}
-  .hero-actions{gap:8px;flex-wrap:wrap;}
-  .hero-actions .btn-primary,.hero-actions .btn-secondary{font-size:12px;padding:9px 16px;flex:1 1 auto;}
-  .hero-stats{flex-wrap:wrap;gap:2px;}
-  .hs-box{padding:10px 14px;min-width:0;flex:1 1 calc(50% - 2px);}
+  .vhero-body{padding:32px 16px 0;}
+  .vhero-actions{gap:8px;flex-wrap:wrap;}
+  .vhero-actions .vhero-btn{font-size:11px;padding:0 14px;height:38px;flex:1 1 auto;justify-content:center;}
+  .vhero-stat-row{flex-wrap:wrap;gap:10px 2px;}
+  .vhero-countdown{flex-wrap:wrap;gap:6px;}
 
   /* ── Series cards ── */
   .series-grid{grid-template-columns:1fr;padding:16px;}
@@ -889,7 +935,7 @@ body.admin-active .editable-hint{display:block;}
   .end-classes{grid-template-columns:repeat(2,1fr);}
   .series-grid{grid-template-columns:repeat(2,1fr);}
   .race-cards{grid-template-columns:repeat(2,1fr);}
-  .home-hero{padding:36px 24px 28px;}
+  .vhero-body{padding:40px 24px 0;}
   .series-grid,.race-cards,.upcoming-grid{padding-left:24px;padding-right:24px;}
   .about-grid{grid-template-columns:1fr;}
   .join-grid{grid-template-columns:1fr;}
@@ -974,20 +1020,55 @@ body.admin-active .editable-hint{display:block;}
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <div class="home-hero">
-    <div class="hero-eyebrow">2026 Season · 5 Championship Series</div>
-    <h1 class="hero-h1">VELOCITY<br><span>NOVA</span></h1>
-    <p class="hero-desc">Four championships. One ladder. The home of open-wheel and endurance racing's next generation of champions — from Formula 3 to F1 glory and GT3 to Hypercar.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="navigate('series')">Explore Series</button>
-      <button class="btn-secondary" onclick="navigate('schedule')">Race Calendar</button>
+  <div class="vhero">
+    <div class="vhero-stripes"></div>
+    <div class="vhero-glow"></div>
+    <div class="vhero-glow2"></div>
+    <div class="vhero-body">
+      <div>
+        <div class="vhero-tag-row">
+          <span class="vhero-tag">2026 Season</span>
+          <span class="vhero-live"><i></i>5 Championship Series</span>
+        </div>
+        <h1 class="vhero-title"><span class="l1">VELOCITY</span><span class="l2">NOVA</span></h1>
+        <p class="vhero-desc">Four championships. One ladder. The home of open-wheel and endurance racing's next generation of champions — from Formula 3 to F1 glory and GT3 to Hypercar.</p>
+        <div class="vhero-actions">
+          <button class="vhero-btn primary" onclick="navigate('series')">Explore Series →</button>
+          <button class="vhero-btn ghost" onclick="navigate('schedule')">Race Calendar</button>
+        </div>
+      </div>
+      <div>
+        <div class="vhero-card">
+          <div class="vhero-card-lbl">Next Round</div>
+          <div class="vhero-card-race">Las Vegas Grand Prix</div>
+          <div class="vhero-card-circuit">Las Vegas Strip Circuit · 🇺🇸</div>
+          <div class="vhero-countdown">
+            <div class="vc-box"><div class="vc-num">03</div><div class="vc-lbl">Round</div></div>
+            <div class="vc-box"><div class="vc-num">Jul 11–12</div><div class="vc-lbl">Date</div></div>
+            <div class="vc-box"><div class="vc-num">F1·F2·F3</div><div class="vc-lbl">Series</div></div>
+          </div>
+        </div>
+        <div class="vhero-stat-row">
+          <div class="vhero-stat"><div class="vhero-stat-num">4</div><div class="vhero-stat-lbl">Series</div></div>
+          <div class="vhero-stat"><div class="vhero-stat-num">64+</div><div class="vhero-stat-lbl">Drivers</div></div>
+          <div class="vhero-stat"><div class="vhero-stat-num">16</div><div class="vhero-stat-lbl">Rounds</div></div>
+          <div class="vhero-stat"><div class="vhero-stat-num">20+</div><div class="vhero-stat-lbl">Countries</div></div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div class="hs-box"><div class="hs-num">2026</div><div class="hs-lbl">Founded</div></div>
-      <div class="hs-box"><div class="hs-num">4</div><div class="hs-lbl">Series</div></div>
-      <div class="hs-box"><div class="hs-num">64+</div><div class="hs-lbl">Drivers</div></div>
-      <div class="hs-box"><div class="hs-num">16</div><div class="hs-lbl">Rounds</div></div>
-      <div class="hs-box"><div class="hs-num">20+</div><div class="hs-lbl">Countries</div></div>
+    <div class="vhero-marquee">
+      <div class="vhero-marquee-track">
+        <span><b>VNFS F1</b> · Nick leads the standings</span>
+        <span><b>VNFS F2</b> · Gamrin tops the board</span>
+        <span><b>VNFS F3</b> · Rising stars battle for points</span>
+        <span><b>VNFS END</b> · GT3 &amp; Hypercar endurance racing</span>
+        <span>Next: <b>Las Vegas Grand Prix</b> · Jul 11–12</span>
+        <span><b>VNFS F1</b> · Nick leads the standings</span>
+        <span><b>VNFS F2</b> · Gamrin tops the board</span>
+        <span><b>VNFS F3</b> · Rising stars battle for points</span>
+        <span><b>VNFS END</b> · GT3 &amp; Hypercar endurance racing</span>
+        <span>Next: <b>Las Vegas Grand Prix</b> · Jul 11–12</span>
+      </div>
     </div>
   </div>
   <div class="home-next">
@@ -1159,10 +1240,15 @@ body.admin-active .editable-hint{display:block;}
 
 <!-- STANDINGS ENDURANCE -->
 <div class="page" id="page-standings-end">
-  <div class="standings-hero"><button class="back-btn" onclick="navigate('series-end')">← Endurance</button><div class="sd-badge sd-end">Season 1 · Endurance Racing</div><h1 class="page-title">Endurance Standings</h1><p class="page-sub">Drivers' and Constructors' Championships — VNFS Endurance</p></div>
+  <div class="standings-hero"><button class="back-btn" onclick="navigate('series-end')">← Endurance</button><div class="sd-badge sd-end">Season 1 · Endurance Racing</div><h1 class="page-title">Endurance Standings</h1><p class="page-sub">Drivers' and Constructors' Championships by class — VNFS Endurance</p></div>
+  <div class="race-class-tabs" id="end-standings-class-tabs" style="padding:0 32px 16px;">
+    <button class="rc-tab active" onclick="showEndStandingsClass('hyper',this)">Hypercar (LMDh)</button>
+    <button class="rc-tab" onclick="showEndStandingsClass('lmp2',this)">LMP2</button>
+    <button class="rc-tab" onclick="showEndStandingsClass('gt3',this)">GT3</button>
+  </div>
   <div class="st-sub-tabs">
     <button class="st-sub active" onclick="showStSub('drivers',this,'end')">Drivers (WDC)</button>
-    <button class="st-sub" onclick="showStSub('constructors',this,'end')">Constructors (WCC)</button>
+    <button class="st-sub" onclick="showStSub('constructors',this,'end')">Manufacturers (WCC)</button>
     <button class="copy-png-btn" id="copy-standings-end" onclick="copyStandingsPng('end')" style="margin-left:auto;">⬇️ Download PNG</button>
   </div>
   <div id="st-drivers-view-end"><div class="standings-table"><div class="st-head"><div class="sth">POS</div><div class="sth">DRIVER</div><div class="sth right">PTS</div><div class="sth">FORM</div><div class="sth right">W</div><div class="sth right">POD</div><div class="sth right">DNF</div></div><div id="st-board-end"></div></div></div>
@@ -1234,9 +1320,9 @@ body.admin-active .editable-hint{display:block;}
   <!-- TAB: RESULTS -->
   <div class="rd-tab-content" id="rd-tab-results">
     <div class="race-class-tabs" id="rd-class-tabs" style="display:none;">
-      <button class="rc-tab active" onclick="showClass('gt3',this)">GT3</button>
+      <button class="rc-tab active" onclick="showClass('hyper',this)">Hypercar</button>
       <button class="rc-tab" onclick="showClass('lmp2',this)">LMP2</button>
-      <button class="rc-tab" onclick="showClass('hyper',this)">Hypercar</button>
+      <button class="rc-tab" onclick="showClass('gt3',this)">GT3</button>
     </div>
     <div id="rd-dotd" style="display:none;"></div>
     <div class="results-table" id="rd-results-wrap">
@@ -1807,7 +1893,7 @@ const SOCIAL_LINKS = {
 const RACES = [
   {rnd:'01', name:'Italian Grand Prix',        circuit:'Autodromo Nazionale Monza',                    satDate:'Jun 27', sunDate:'Jun 28', status:'completed', series:['f1'], flag:'🇮🇹', flagCode:'it'},
   {rnd:'E01', name:'Sebring',          circuit:'Sebring International Raceway',   satDate:'Jul 3',  sunDate:'2.5 HRS · 2:00 PM EST', status:'completed', series:['end'], flag:'🇺🇸', flagCode:'us'},
-  {rnd:'02', name:'Canadian Grand Prix',       circuit:'Circuit Gilles Villeneuve',                    satDate:'Jul 4',  sunDate:'Jul 5',  status:'upcoming', series:['f1','f2','f3'], flag:'🇨🇦', flagCode:'ca', rndBySeries:{f2:'01',f3:'01'}},
+  {rnd:'02', name:'Canadian Grand Prix',       circuit:'Circuit Gilles Villeneuve',                    satDate:'Jul 4',  sunDate:'Jul 5',  status:'completed', series:['f1','f2','f3'], flag:'🇨🇦', flagCode:'ca', rndBySeries:{f2:'01',f3:'01'}},
   {rnd:'E02', name:'Misano',           circuit:'Misano World Circuit',            satDate:'Jul 10', sunDate:'4 HRS · 2:00 PM EST',   status:'upcoming', series:['end'], flag:'🇮🇹', flagCode:'it'},
   {rnd:'03', name:'Las Vegas Grand Prix',      circuit:'Las Vegas Strip Circuit',                      satDate:'Jul 11', sunDate:'Jul 12', status:'upcoming', series:['f1','f2','f3'], flag:'🇺🇸', flagCode:'us', rndBySeries:{f2:'02',f3:'02'}},
   {rnd:'E03', name:'Laguna Seca',      circuit:'WeatherTech Raceway Laguna Seca', satDate:'Jul 17', sunDate:'3 HRS · 2:00 PM EST',   status:'upcoming', series:['end'], flag:'🇺🇸', flagCode:'us'},
@@ -1918,46 +2004,107 @@ const RESULTS = {
     {pos:16, name:'Elijah',     team:'Hertz Porsche',                  pts:1,  fl:false, pole:false, note:'DNS'},
   ],
   '0-f1-quali': ['Nick','Lory','Douzy','theo','Ageftyg2','Joshua','Dovante','Nath','Vitality','Zemmer','Elijah','Michael','Juan','Lewis','Alex','Lightening'],
+  '1-end-hyper': [
+    {pos:1, name:'BMW LMDH',           team:'BMW M Team WRT',           pts:20, fl:false, pole:false, note:'Overall P1'},
+    {pos:2, name:'Aston Martin THOR Team', team:'Aston Martin THOR Team', pts:17, fl:false, pole:false, note:'Overall P6'},
+  ],
+  '1-end-lmp2': [
+    {pos:1, name:'AO Racing',      team:'AO Racing',      pts:20, fl:false, pole:false, note:'Overall P2'},
+    {pos:2, name:'G-Drive Racing', team:'G-Drive Racing', pts:17, fl:false, pole:false, note:'Overall P4'},
+  ],
+  '1-end-gt3': [
+    {pos:1, name:'Akkodis ASP Team', team:'Akkodis ASP Team', pts:20, fl:false, pole:false, note:'Overall P3'},
+    {pos:2, name:'AO Racing GT3',    team:'AO Racing GT3',    pts:17, fl:false, pole:false, note:'Overall P5'},
+  ],
+  '2-f1': [
+    {pos:1, name:'Nick',     team:'Scuderia Ferrari',               pts:25, fl:false, pole:false, note:''},
+    {pos:2, name:'Douzy',    team:'Richard Mille LM Motorsport F1', pts:18, fl:false, pole:false, note:''},
+    {pos:3, name:'Lory',     team:'Richard Mille LM Motorsport F1', pts:15, fl:false, pole:false, note:''},
+    {pos:4, name:'Joshua',   team:'Isreal Racing Point',            pts:12, fl:false, pole:false, note:''},
+    {pos:5, name:'Dovante',  team:'Aero Apex Racing',                pts:10, fl:false, pole:false, note:''},
+    {pos:6, name:'Nath',              team:'Monster Energy Performance', pts:8, fl:false, pole:false, note:'DNF'},
+    {pos:7, name:'Sunrise',  team:'Hertz Porsche',                   pts:6,  fl:false, pole:false, note:''},
+    {pos:8, name:'Ageftyg2', team:'McLaren',                        pts:0, fl:false, pole:false, note:''},
+    {pos:9, name:'Jeffz',             team:'Cassien Motorsport',         pts:0, fl:false, pole:false, note:'DNF'},
+    {pos:10,name:'Elijah',            team:'Hertz Porsche',              pts:0, fl:false, pole:false, note:'DNF'},
+    {pos:11,name:'yktomms the sequel',team:'Aero Apex Racing',           pts:0, fl:false, pole:false, note:'DNF'},
+    {pos:12,name:'Vitality',          team:'Scuderia Ferrari',           pts:0, fl:false, pole:false, note:'DNF'},
+    {pos:13,name:'Lewis',             team:'Cassien Motorsport',         pts:0, fl:false, pole:false, note:'DNF'},
+  ],
+  '2-f2': [
+    {pos:1, name:'Gamrin',   team:'Richard Mille LM Performance F2', pts:25, fl:false, pole:false, note:''},
+    {pos:2, name:'Skirmis',  team:'Richard Mille LM Performance F2', pts:18, fl:false, pole:false, note:''},
+    {pos:4, name:'Crocs',    team:'Acura Team Penske',                pts:12, fl:false, pole:false, note:''},
+    {pos:5, name:'Igorexe',  team:'Acura Team Penske',                pts:10, fl:false, pole:false, note:''},
+    {pos:6, name:'Gasly',    team:'AF Corsa',                         pts:8,  fl:false, pole:false, note:''},
+    {pos:7, name:'Batman',   team:'Night Reapers X',                  pts:0,  fl:false, pole:false, note:'DNF'},
+    {pos:8, name:'Nahim',    team:'Isreal Racing Point',              pts:0,  fl:false, pole:false, note:'DNF'},
+    {pos:3, name:'Style',    team:'Isreal Racing Point',              pts:0,  fl:false, pole:false, note:'DNF'},
+    {pos:10,name:'Alistair', team:'Monster Juniors F2',               pts:0,  fl:false, pole:false, note:'DNF'},
+  ],
+  '2-f3': [
+    {pos:1, name:'PradX',      team:'LMP',                            pts:25, fl:false, pole:false, note:''},
+    {pos:2, name:'Mufasa',     team:'Unknown',                        pts:18, fl:false, pole:false, note:'Team unconfirmed'},
+    {pos:3, name:'Piko',       team:'LMP',                            pts:15, fl:false, pole:false, note:''},
+    {pos:4, name:'Peters',     team:"Tarigy's Motorsport Team",       pts:12, fl:false, pole:false, note:''},
+    {pos:5, name:'Bartos',     team:'Aero Apex Racing F3',            pts:10, fl:false, pole:false, note:''},
+    {pos:6, name:'YellowR1ce', team:'Isreal Racing Point F3',         pts:8,  fl:false, pole:false, note:''},
+    {pos:7, name:'Swixks',     team:'Carti Racing Association F3',    pts:6,  fl:false, pole:false, note:''},
+    {pos:8, name:'Fabián',     team:'Isreal Racing Point F3',         pts:4,  fl:false, pole:false, note:''},
+    {pos:9, name:'Chonki',     team:'Isreal Racing Point F3',         pts:2,  fl:false, pole:false, note:''},
+  ],
 };
 
 const STANDINGS_DATA = {
   f1: {
     drivers: [
       {name:'Michael',    code:'MD1', team:'Mercedes-AMG',                   pts:26, wins:1,pods:1,dnf:0,pos:1,  gap:'—',   form:['W']},
-      {name:'Nick',       code:'MD1', team:'Scuderia Ferrari',               pts:26, wins:0,pods:1,dnf:0,pos:2,  gap:'0',   form:['W']},
-      {name:'Douzy',      code:'MD2', team:'Richard Mille LM Motorsport F1', pts:20, wins:0,pods:1,dnf:0,pos:3,  gap:'-6',  form:['2']},
-      {name:'Lory',       code:'MD1', team:'Richard Mille LM Motorsport F1', pts:16, wins:0,pods:1,dnf:0,pos:4,  gap:'-11', form:['3']},
-      {name:'Joshua',     code:'MD2', team:'Isreal Racing Point',            pts:13, wins:0,pods:0,dnf:0,pos:5,  gap:'-14', form:['R']},
-      {name:'Ageftyg2',   code:'MD2', team:'McLaren',                        pts:11, wins:0,pods:0,dnf:0,pos:6,  gap:'-16', form:['R']},
-      {name:'Dovante',    code:'MD2', team:'Aero Apex Racing',               pts:9,  wins:0,pods:0,dnf:0,pos:7,  gap:'-18', form:['R']},
-      {name:'Vitality',   code:'MD2', team:'Scuderia Ferrari',               pts:7,  wins:0,pods:0,dnf:0,pos:8,  gap:'-20', form:['R']},
-      {name:'Nath',       code:'MD2', team:'Monster Energy Performance',     pts:5,  wins:0,pods:0,dnf:0,pos:9,  gap:'-22', form:['R']},
-      {name:'theo',       code:'MD1', team:'Monster Energy Performance',     pts:3,  wins:0,pods:0,dnf:0,pos:10, gap:'-24', form:['R']},
-      {name:'Lewis',      code:'MD2', team:'Cassien Motorsport',             pts:2,  wins:0,pods:0,dnf:0,pos:11, gap:'-24', form:['R']},
-      {name:'Alpha',      code:'MD2', team:'Mercedes-AMG',                   pts:1,  wins:0,pods:0,dnf:1,pos:12, gap:'-26', form:['ret']},
-      {name:'Lightening', code:'MD1', team:'Red Bull Racing',                pts:1,  wins:0,pods:0,dnf:1,pos:13, gap:'-26', form:['ret']},
-      {name:'Juan',       code:'MD1', team:'Monster Cadillac F1 Team',       pts:1,  wins:0,pods:0,dnf:1,pos:14, gap:'-26', form:['ret']},
-      {name:'Zemmer',     code:'MD1', team:'Isreal Racing Point',            pts:1,  wins:0,pods:0,dnf:1,pos:15, gap:'-26', form:['ret']},
-      {name:'Elijah',     code:'MD1', team:'Hertz Porsche',                  pts:1,  wins:0,pods:0,dnf:0,pos:16, gap:'-26', form:['ret']},
-      {name:'N0vac',      code:'MD1', team:'McLaren',                        pts:0,  wins:0,pods:0,dnf:0,pos:17, gap:'-27', form:[]},
-      {name:'smol',       code:'MD2', team:'Monster Cadillac F1 Team',       pts:0,  wins:0,pods:0,dnf:0,pos:18, gap:'-27', form:[]},
-      {name:'letgoh',     code:'MD2', team:'Red Bull Racing',                pts:0,  wins:0,pods:0,dnf:0,pos:19, gap:'-27', form:[]},
-      {name:'Jeffz',      code:'MD1', team:'Cassien Motorsport',             pts:0,  wins:0,pods:0,dnf:0,pos:20, gap:'-27', form:[]},
-      {name:'Sun_Rise',   code:'MD2', team:'Hertz Porsche',                  pts:0,  wins:0,pods:0,dnf:0,pos:21, gap:'-27', form:[]},
-      {name:'Nico',       code:'MD1', team:'Aero Apex Racing',               pts:0,  wins:0,pods:0,dnf:0,pos:22, gap:'-27', form:[]},
+      {name:'Nick',       code:'MD1', team:'Scuderia Ferrari',               pts:51, wins:1,pods:2,dnf:0,pos:2,  gap:'0',   form:['W','W']},
+      {name:'Douzy',      code:'MD2', team:'Richard Mille LM Motorsport F1', pts:38, wins:0,pods:2,dnf:0,pos:3,  gap:'-6',  form:['2','2']},
+      {name:'Lory',       code:'MD1', team:'Richard Mille LM Motorsport F1', pts:31, wins:0,pods:2,dnf:0,pos:4,  gap:'-11', form:['3','3']},
+      {name:'Joshua',     code:'MD2', team:'Isreal Racing Point',            pts:25, wins:0,pods:0,dnf:0,pos:5,  gap:'-14', form:['R','R']},
+      {name:'Ageftyg2',   code:'MD2', team:'McLaren',                        pts:11, wins:0,pods:0,dnf:0,pos:6,  gap:'-16', form:['R','R']},
+      {name:'Dovante',    code:'MD2', team:'Aero Apex Racing',               pts:19, wins:0,pods:0,dnf:0,pos:7,  gap:'-18', form:['R','R']},
+      {name:'Sunrise',    code:'MD2', team:'Hertz Porsche',                  pts:6,  wins:0,pods:0,dnf:0,pos:8,  gap:'-20', form:['R']},
+      {name:'Vitality',   code:'MD2', team:'Scuderia Ferrari',               pts:7,  wins:0,pods:0,dnf:1,pos:9,  gap:'-20', form:['ret','R']},
+      {name:'Nath',       code:'MD2', team:'Monster Energy Performance',     pts:13, wins:0,pods:0,dnf:1,pos:10, gap:'-22', form:['ret','R']},
+      {name:'theo',       code:'MD1', team:'Monster Energy Performance',     pts:3,  wins:0,pods:0,dnf:0,pos:11, gap:'-24', form:['R']},
+      {name:'Lewis',      code:'MD2', team:'Cassien Motorsport',             pts:2,  wins:0,pods:0,dnf:1,pos:12, gap:'-24', form:['ret','R']},
+      {name:'Elijah',     code:'MD1', team:'Hertz Porsche',                  pts:1,  wins:0,pods:0,dnf:1,pos:13, gap:'-26', form:['ret','ret']},
+      {name:'Alpha',      code:'MD2', team:'Mercedes-AMG',                   pts:1,  wins:0,pods:0,dnf:1,pos:14, gap:'-26', form:['ret']},
+      {name:'Lightening', code:'MD1', team:'Red Bull Racing',                pts:1,  wins:0,pods:0,dnf:1,pos:15, gap:'-26', form:['ret']},
+      {name:'Juan',       code:'MD1', team:'Monster Cadillac F1 Team',       pts:1,  wins:0,pods:0,dnf:1,pos:16, gap:'-26', form:['ret']},
+      {name:'Zemmer',     code:'MD1', team:'Isreal Racing Point',            pts:1,  wins:0,pods:0,dnf:1,pos:17, gap:'-26', form:['ret']},
+      {name:'Jeffz',      code:'MD1', team:'Cassien Motorsport',             pts:0,  wins:0,pods:0,dnf:1,pos:18, gap:'-27', form:['ret']},
+      {name:'yktomms the sequel', code:'MD1', team:'Aero Apex Racing',       pts:0,  wins:0,pods:0,dnf:1,pos:19, gap:'-27', form:['ret']},
+      {name:'Vitality',   code:'MD2', team:'Scuderia Ferrari',               pts:7,  wins:0,pods:0,dnf:1,pos:9,  gap:'-20', form:['ret','R']},
+      {name:'Nath',       code:'MD2', team:'Monster Energy Performance',     pts:13, wins:0,pods:0,dnf:1,pos:10, gap:'-22', form:['ret','R']},
+      {name:'theo',       code:'MD1', team:'Monster Energy Performance',     pts:3,  wins:0,pods:0,dnf:0,pos:11, gap:'-24', form:['R']},
+      {name:'Lewis',      code:'MD2', team:'Cassien Motorsport',             pts:2,  wins:0,pods:0,dnf:1,pos:12, gap:'-24', form:['ret','R']},
+      {name:'Elijah',     code:'MD1', team:'Hertz Porsche',                  pts:1,  wins:0,pods:0,dnf:1,pos:13, gap:'-26', form:['ret','ret']},
+      {name:'Alpha',      code:'MD2', team:'Mercedes-AMG',                   pts:1,  wins:0,pods:0,dnf:1,pos:14, gap:'-26', form:['ret']},
+      {name:'Lightening', code:'MD1', team:'Red Bull Racing',                pts:1,  wins:0,pods:0,dnf:1,pos:15, gap:'-26', form:['ret']},
+      {name:'Juan',       code:'MD1', team:'Monster Cadillac F1 Team',       pts:1,  wins:0,pods:0,dnf:1,pos:16, gap:'-26', form:['ret']},
+      {name:'Zemmer',     code:'MD1', team:'Isreal Racing Point',            pts:1,  wins:0,pods:0,dnf:1,pos:17, gap:'-26', form:['ret']},
+      {name:'Jeffz',      code:'MD1', team:'Cassien Motorsport',             pts:0,  wins:0,pods:0,dnf:1,pos:18, gap:'-27', form:['ret']},
+      {name:'yktomms the sequel', code:'MD1', team:'Aero Apex Racing',       pts:0,  wins:0,pods:0,dnf:1,pos:19, gap:'-27', form:['ret']},
+      {name:'N0vac',      code:'MD1', team:'McLaren',                        pts:0,  wins:0,pods:0,dnf:0,pos:20, gap:'-27', form:[]},
+      {name:'smol',       code:'MD2', team:'Monster Cadillac F1 Team',       pts:0,  wins:0,pods:0,dnf:0,pos:21, gap:'-27', form:[]},
+      {name:'letgoh',     code:'MD2', team:'Red Bull Racing',                pts:0,  wins:0,pods:0,dnf:0,pos:22, gap:'-27', form:[]},
+      {name:'Nico',       code:'MD1', team:'Aero Apex Racing',               pts:0,  wins:0,pods:0,dnf:0,pos:23, gap:'-27', form:[]},
     ],
     constructors: [
-      {name:'Richard Mille LM Motorsport F1', color:'#a78bfa', pts:36, pos:1},
-      {name:'Scuderia Ferrari',               color:'#dc143c', pts:33, pos:2},
+      {name:'Richard Mille LM Motorsport F1', color:'#a78bfa', pts:69, pos:1},
+      {name:'Scuderia Ferrari',               color:'#dc143c', pts:58, pos:2},
       {name:'Mercedes-AMG',                   color:'#00d2be', pts:28, pos:3},
-      {name:'Isreal Racing Point',            color:'#60a5fa', pts:14, pos:4},
-      {name:'McLaren',                        color:'#ff8000', pts:11, pos:5},
-      {name:'Monster Energy Performance',     color:'#84cc16', pts:8,  pos:6},
-      {name:'Aero Apex Racing',               color:'#7c3aed', pts:10, pos:7},
-      {name:'Red Bull Racing',                color:'#1e3a8a', pts:1,  pos:8},
-      {name:'Monster Cadillac F1 Team',       color:'#22c55e', pts:1,  pos:9},
-      {name:'Cassien Motorsport',             color:'#22c55e', pts:2,  pos:10},
-      {name:'Hertz Porsche',                  color:'#b91c1c', pts:1,  pos:11},
+      {name:'Isreal Racing Point',            color:'#60a5fa', pts:26, pos:4},
+      {name:'Aero Apex Racing',               color:'#7c3aed', pts:20, pos:5},
+      {name:'Monster Energy Performance',     color:'#84cc16', pts:16, pos:6},
+      {name:'McLaren',                        color:'#ff8000', pts:11, pos:7},
+      {name:'Cassien Motorsport',             color:'#22c55e', pts:2,  pos:8},
+      {name:'Hertz Porsche',                  color:'#b91c1c', pts:7,  pos:9},
+      {name:'Red Bull Racing',                color:'#1e3a8a', pts:1,  pos:10},
+      {name:'Monster Cadillac F1 Team',       color:'#22c55e', pts:1,  pos:11},
     ],
   },
   f2: {
@@ -1965,35 +2112,39 @@ const STANDINGS_DATA = {
       {name:'Zaphira', code:'MD1', team:'Isreal Racing Point',               pts:0,wins:0,pods:0,dnf:0,pos:1, gap:'—',form:[]},
       {name:'neon', code:'MD2', team:'Isreal Racing Point',               pts:0,wins:0,pods:0,dnf:0,pos:2, gap:'—',form:[]},
       {name:'Jardin', code:'MD1', team:'Richard Mille LM Performance F2',   pts:0,wins:0,pods:0,dnf:0,pos:3, gap:'—',form:[]},
-      {name:'Gamrin', code:'MD2', team:'Richard Mille LM Performance F2',   pts:0,wins:0,pods:0,dnf:0,pos:4, gap:'—',form:[]},
-      {name:'Newbie', code:'MD1', team:'Kimibear Racing',                   pts:0,wins:0,pods:0,dnf:0,pos:5, gap:'—',form:[]},
-      {name:'poland',    code:'MD2', team:'Kimibear Racing',                   pts:0,wins:0,pods:0,dnf:0,pos:6, gap:'—',form:[]},
-      {name:'alonso', code:'MD1', team:'Monster Juniors F2',                pts:0,wins:0,pods:0,dnf:0,pos:7, gap:'—',form:[]},
-      {name:'Chester', code:'MD2', team:'Monster Juniors F2',                pts:0,wins:0,pods:0,dnf:0,pos:8, gap:'—',form:[]},
-      {name:'Patryk', code:'MD1', team:'PREMA Racing',                      pts:0,wins:0,pods:0,dnf:0,pos:9, gap:'—',form:[]},
-      {name:'Oliveira', code:'MD2', team:'PREMA Racing',                      pts:0,wins:0,pods:0,dnf:0,pos:10,gap:'—',form:[]},
-      {name:'Bobert', code:'MD1', team:'Carti Racing Association',          pts:0,wins:0,pods:0,dnf:0,pos:11,gap:'—',form:[]},
-      {name:'themightyringer$',    code:'MD2', team:'Carti Racing Association',          pts:0,wins:0,pods:0,dnf:0,pos:12,gap:'—',form:[]},
-      {name:'Crocs', code:'MD1', team:'Acura Team Penske',                 pts:0,wins:0,pods:0,dnf:0,pos:13,gap:'—',form:[]},
-      {name:'Igorexe', code:'MD2', team:'Acura Team Penske',                 pts:0,wins:0,pods:0,dnf:0,pos:14,gap:'—',form:[]},
-      {name:'Batman', code:'MD1', team:'Night Reapers X',                   pts:0,wins:0,pods:0,dnf:0,pos:15,gap:'—',form:[]},
-      {name:'Ginger', code:'MD2', team:'Night Reapers X',                   pts:0,wins:0,pods:0,dnf:0,pos:16,gap:'—',form:[]},
-      {name:'Matux', code:'MD1', team:'Cassien Motorsports F2',            pts:0,wins:0,pods:0,dnf:0,pos:17,gap:'—',form:[]},
-      {name:'Zaewerts', code:'MD2', team:'Cassien Motorsports F2',            pts:0,wins:0,pods:0,dnf:0,pos:18,gap:'—',form:[]},
-      {name:'Cars', code:'MD1', team:'AF Corsa',                          pts:0,wins:0,pods:0,dnf:0,pos:19,gap:'—',form:[]},
-      {name:'Gasly', code:'MD2', team:'AF Corsa',                          pts:0,wins:0,pods:0,dnf:0,pos:20,gap:'—',form:[]},
+      {name:'Gamrin', code:'MD2', team:'Richard Mille LM Performance F2',   pts:25,wins:1,pods:1,dnf:0,pos:4, gap:'—',form:['W']},
+      {name:'Skirmis', code:'MD1', team:'Richard Mille LM Performance F2',  pts:18,wins:0,pods:1,dnf:0,pos:5, gap:'—',form:['2']},
+      {name:'Newbie', code:'MD1', team:'Kimibear Racing',                   pts:0,wins:0,pods:0,dnf:0,pos:6, gap:'—',form:[]},
+      {name:'poland',    code:'MD2', team:'Kimibear Racing',                   pts:0,wins:0,pods:0,dnf:0,pos:7, gap:'—',form:[]},
+      {name:'alonso', code:'MD1', team:'Monster Juniors F2',                pts:0,wins:0,pods:0,dnf:0,pos:8, gap:'—',form:[]},
+      {name:'Alistair', code:'MD1', team:'Monster Juniors F2',              pts:0,wins:0,pods:0,dnf:1,pos:9, gap:'—',form:['ret']},
+      {name:'Chester', code:'MD2', team:'Monster Juniors F2',                pts:0,wins:0,pods:0,dnf:0,pos:10, gap:'—',form:[]},
+      {name:'Patryk', code:'MD1', team:'PREMA Racing',                      pts:0,wins:0,pods:0,dnf:0,pos:11, gap:'—',form:[]},
+      {name:'Oliveira', code:'MD2', team:'PREMA Racing',                      pts:0,wins:0,pods:0,dnf:0,pos:12,gap:'—',form:[]},
+      {name:'Bobert', code:'MD1', team:'Carti Racing Association',          pts:0,wins:0,pods:0,dnf:0,pos:13,gap:'—',form:[]},
+      {name:'themightyringer$',    code:'MD2', team:'Carti Racing Association',          pts:0,wins:0,pods:0,dnf:0,pos:14,gap:'—',form:[]},
+      {name:'Crocs', code:'MD1', team:'Acura Team Penske',                 pts:12,wins:0,pods:0,dnf:0,pos:15,gap:'—',form:['R']},
+      {name:'Igorexe', code:'MD2', team:'Acura Team Penske',                 pts:10,wins:0,pods:0,dnf:0,pos:16,gap:'—',form:['R']},
+      {name:'Nahim', code:'RD1', team:'Isreal Racing Point',                pts:0,wins:0,pods:0,dnf:1,pos:17,gap:'—',form:['ret']},
+      {name:'Style', code:'RD2', team:'Isreal Racing Point',                pts:0,wins:0,pods:0,dnf:1,pos:18,gap:'—',form:['ret']},
+      {name:'Batman', code:'MD1', team:'Night Reapers X',                   pts:0,wins:0,pods:0,dnf:1,pos:19,gap:'—',form:['ret']},
+      {name:'Ginger', code:'MD2', team:'Night Reapers X',                   pts:0,wins:0,pods:0,dnf:0,pos:20,gap:'—',form:[]},
+      {name:'Matux', code:'MD1', team:'Cassien Motorsports F2',            pts:0,wins:0,pods:0,dnf:0,pos:21,gap:'—',form:[]},
+      {name:'Zaewerts', code:'MD2', team:'Cassien Motorsports F2',            pts:0,wins:0,pods:0,dnf:0,pos:22,gap:'—',form:[]},
+      {name:'Cars', code:'MD1', team:'AF Corsa',                          pts:0,wins:0,pods:0,dnf:0,pos:23,gap:'—',form:[]},
+      {name:'Gasly', code:'MD2', team:'AF Corsa',                          pts:8,wins:0,pods:0,dnf:0,pos:24,gap:'—',form:['R']},
     ],
     constructors: [
-      {name:'Isreal Racing Point',             color:'#60a5fa', pts:0, pos:1},
-      {name:'Richard Mille LM Performance F2', color:'#a78bfa', pts:0, pos:2},
-      {name:'Kimibear Racing',                 color:'#f59e0b', pts:0, pos:3},
-      {name:'Monster Juniors F2',              color:'#84cc16', pts:0, pos:4},
-      {name:'PREMA Racing',                    color:'#dc143c', pts:0, pos:5},
-      {name:'Carti Racing Association',        color:'#ec4899', pts:0, pos:6},
-      {name:'Acura Team Penske',               color:'#b91c1c', pts:0, pos:7},
-      {name:'Night Reapers X',                 color:'#6b7280', pts:0, pos:8},
-      {name:'Cassien Motorsports F2',          color:'#22c55e', pts:0, pos:9},
-      {name:'AF Corsa',                        color:'#e11d48', pts:0, pos:10},
+      {name:'Richard Mille LM Performance F2', color:'#a78bfa', pts:43, pos:1},
+      {name:'Acura Team Penske',               color:'#b91c1c', pts:22, pos:2},
+      {name:'AF Corsa',                        color:'#e11d48', pts:8,  pos:3},
+      {name:'Isreal Racing Point',             color:'#60a5fa', pts:0,  pos:4},
+      {name:'Monster Juniors F2',              color:'#84cc16', pts:0,  pos:5},
+      {name:'Night Reapers X',                 color:'#6b7280', pts:0,  pos:6},
+      {name:'Kimibear Racing',                 color:'#f59e0b', pts:0,  pos:7},
+      {name:'PREMA Racing',                    color:'#dc143c', pts:0,  pos:8},
+      {name:'Carti Racing Association',        color:'#ec4899', pts:0,  pos:9},
+      {name:'Cassien Motorsports F2',          color:'#22c55e', pts:0,  pos:10},
     ],
   },
   f3: {
@@ -2007,35 +2158,89 @@ const STANDINGS_DATA = {
       {name:'Daih_V',    code:'MD1', team:'Monster Motorsports F3',     pts:0,wins:0,pods:0,dnf:0,pos:7, gap:'—',form:[]},
       {name:'Nahim', code:'MD2', team:'Monster Motorsports F3',     pts:0,wins:0,pods:0,dnf:0,pos:8, gap:'—',form:[]},
       {name:'Xngal', code:'MD3', team:'Monster Motorsports F3',     pts:0,wins:0,pods:0,dnf:0,pos:9, gap:'—',form:[]},
-      {name:'PradX', code:'MD1', team:'LMP',                        pts:0,wins:0,pods:0,dnf:0,pos:10,gap:'—',form:[]},
-      {name:'Piko', code:'MD2', team:'LMP',                        pts:0,wins:0,pods:0,dnf:0,pos:11,gap:'—',form:[]},
-      {name:'Skirmis', code:'MD3', team:'LMP',                        pts:0,wins:0,pods:0,dnf:0,pos:12,gap:'—',form:[]},
-      {name:'Chonki', code:'MD1', team:'Isreal Racing Point F3',     pts:0,wins:0,pods:0,dnf:0,pos:13,gap:'—',form:[]},
-      {name:'shawn',    code:'MD2', team:'Isreal Racing Point F3',     pts:0,wins:0,pods:0,dnf:0,pos:14,gap:'—',form:[]},
-      {name:'Fabián', code:'MD3', team:'Isreal Racing Point F3',     pts:0,wins:0,pods:0,dnf:0,pos:15,gap:'—',form:[]},
-      {name:'Felipe', code:'MD1', team:'Carti Racing Association F3',pts:0,wins:0,pods:0,dnf:0,pos:16,gap:'—',form:[]},
-      {name:'wavee', code:'MD2', team:'Carti Racing Association F3',pts:0,wins:0,pods:0,dnf:0,pos:17,gap:'—',form:[]},
-      {name:'Swixks', code:'MD3', team:'Carti Racing Association F3',pts:0,wins:0,pods:0,dnf:0,pos:18,gap:'—',form:[]},
-      {name:'Bartos', code:'MD1', team:'Aero Apex Racing F3',        pts:0,wins:0,pods:0,dnf:0,pos:19,gap:'—',form:[]},
-      {name:'Spooky',    code:'MD2', team:'Aero Apex Racing F3',        pts:0,wins:0,pods:0,dnf:0,pos:20,gap:'—',form:[]},
-      {name:'ShadowRex', code:'MD1', team:"Tarigy's Motorsport Team",   pts:0,wins:0,pods:0,dnf:0,pos:21,gap:'—',form:[]},
-      {name:'Peters',    code:'MD2', team:"Tarigy's Motorsport Team",   pts:0,wins:0,pods:0,dnf:0,pos:22,gap:'—',form:[]},
-      {name:'Unironically',    code:'MD1', team:'GlitchGP',                   pts:0,wins:0,pods:0,dnf:0,pos:23,gap:'—',form:[]},
-      {name:'Zaewerts', code:'MD2', team:'GlitchGP',                   pts:0,wins:0,pods:0,dnf:0,pos:24,gap:'—',form:[]},
+      {name:'PradX', code:'MD1', team:'LMP',                        pts:25,wins:1,pods:1,dnf:0,pos:10,gap:'—',form:['W']},
+      {name:'Mufasa', code:'—', team:'Unknown',                      pts:18,wins:0,pods:1,dnf:0,pos:11,gap:'—',form:['2']},
+      {name:'Piko', code:'MD2', team:'LMP',                        pts:15,wins:0,pods:1,dnf:0,pos:12,gap:'—',form:['3']},
+      {name:'Skirmis', code:'MD3', team:'LMP',                        pts:0,wins:0,pods:0,dnf:0,pos:13,gap:'—',form:[]},
+      {name:'Peters',    code:'MD2', team:"Tarigy's Motorsport Team",   pts:12,wins:0,pods:0,dnf:0,pos:14,gap:'—',form:['R']},
+      {name:'Bartos', code:'MD1', team:'Aero Apex Racing F3',        pts:10,wins:0,pods:0,dnf:0,pos:15,gap:'—',form:['R']},
+      {name:'YellowR1ce', code:'RD1', team:'Isreal Racing Point F3', pts:8,wins:0,pods:0,dnf:0,pos:16,gap:'—',form:['R']},
+      {name:'Swixks', code:'MD3', team:'Carti Racing Association F3',pts:6,wins:0,pods:0,dnf:0,pos:17,gap:'—',form:['R']},
+      {name:'Fabián', code:'MD3', team:'Isreal Racing Point F3',     pts:4,wins:0,pods:0,dnf:0,pos:18,gap:'—',form:['R']},
+      {name:'Chonki', code:'MD1', team:'Isreal Racing Point F3',     pts:2,wins:0,pods:0,dnf:0,pos:19,gap:'—',form:['R']},
+      {name:'shawn',    code:'MD2', team:'Isreal Racing Point F3',     pts:0,wins:0,pods:0,dnf:0,pos:20,gap:'—',form:[]},
+      {name:'Felipe', code:'MD1', team:'Carti Racing Association F3',pts:0,wins:0,pods:0,dnf:0,pos:21,gap:'—',form:[]},
+      {name:'wavee', code:'MD2', team:'Carti Racing Association F3',pts:0,wins:0,pods:0,dnf:0,pos:22,gap:'—',form:[]},
+      {name:'Spooky',    code:'MD2', team:'Aero Apex Racing F3',        pts:0,wins:0,pods:0,dnf:0,pos:23,gap:'—',form:[]},
+      {name:'ShadowRex', code:'MD1', team:"Tarigy's Motorsport Team",   pts:0,wins:0,pods:0,dnf:0,pos:24,gap:'—',form:[]},
+      {name:'Unironically',    code:'MD1', team:'GlitchGP',                   pts:0,wins:0,pods:0,dnf:0,pos:25,gap:'—',form:[]},
+      {name:'Zaewerts', code:'MD2', team:'GlitchGP',                   pts:0,wins:0,pods:0,dnf:0,pos:26,gap:'—',form:[]},
     ],
     constructors: [
-      {name:'Anonymous Juniors',           color:'#dc143c', pts:0, pos:1},
-      {name:'Cassien Motorsport F3',       color:'#22c55e', pts:0, pos:2},
-      {name:'Monster Motorsports F3',      color:'#84cc16', pts:0, pos:3},
-      {name:'LMP',                         color:'#a78bfa', pts:0, pos:4},
-      {name:'Isreal Racing Point F3',      color:'#60a5fa', pts:0, pos:5},
-      {name:'Carti Racing Association F3', color:'#ec4899', pts:0, pos:6},
-      {name:'Aero Apex Racing F3',         color:'#7c3aed', pts:0, pos:7},
-      {name:"Tarigy's Motorsport Team",    color:'#f59e0b', pts:0, pos:8},
-      {name:'GlitchGP',                    color:'#00d2be', pts:0, pos:9},
+      {name:'LMP',                         color:'#a78bfa', pts:40, pos:1},
+      {name:'Unknown',                     color:'#6b7280', pts:18, pos:2},
+      {name:'Isreal Racing Point F3',      color:'#60a5fa', pts:14, pos:3},
+      {name:"Tarigy's Motorsport Team",    color:'#f59e0b', pts:12, pos:4},
+      {name:'Aero Apex Racing F3',         color:'#7c3aed', pts:10, pos:5},
+      {name:'Carti Racing Association F3', color:'#ec4899', pts:6,  pos:6},
+      {name:'Anonymous Juniors',           color:'#dc143c', pts:0,  pos:7},
+      {name:'Cassien Motorsport F3',       color:'#22c55e', pts:0,  pos:8},
+      {name:'Monster Motorsports F3',      color:'#84cc16', pts:0,  pos:9},
+      {name:'GlitchGP',                    color:'#00d2be', pts:0,  pos:10},
     ],
   },
-  end: { drivers:[], constructors:[] },
+  end: {
+    drivers: [
+      /* GT3 */
+      {name:'Albert, Ticken, Haydo',       code:'', team:'Manthey Porsche',       cls:'gt3', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'HONOR3D, Dave',               code:'', team:'Team WRT',              cls:'gt3', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Chester, q0d6, ZOLl',         code:'', team:'Vista AF Course',       cls:'gt3', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'ZRen, Penguin, Marvelfanboy19', code:'', team:'Mercedes-AMG GT3',      cls:'gt3', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Ogoa, Union, kriekel',        code:'', team:'United Autosports',     cls:'gt3', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Fartgun, fran, Daniel',       code:'', team:'Akkodis ASP Team',      cls:'gt3', pts:20, wins:0, pods:1, dnf:0, pos:0, gap:'—', form:['3']},
+      {name:'ZRen, Penguin, Marvelfanboy19', code:'', team:'AO Racing GT3',         cls:'gt3', pts:17, wins:0, pods:0, dnf:0, pos:0, gap:'—', form:['R']},
+      /* LMP2 */
+      {name:'Neon, wavee, Oscar',          code:'', team:'Taiwanacountry Racing', cls:'lmp2', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'yktomms, Peugeot',            code:'', team:'Vector Sports',         cls:'lmp2', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'nelzeyexe, Kashin',           code:'', team:'CLX Motorsport',        cls:'lmp2', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Lucas, Max, yktomms',         code:'', team:'G-Drive Racing',        cls:'lmp2', pts:17, wins:0, pods:0, dnf:0, pos:0, gap:'—', form:['R']},
+      {name:'Nicolas, Jake',               code:'', team:'JOTA Sport',            cls:'lmp2', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Neon, wavee, Oscar',          code:'', team:'AO Racing',             cls:'lmp2', pts:20, wins:0, pods:1, dnf:0, pos:0, gap:'—', form:['2']},
+      /* Hypercar / LMDh */
+      {name:'Leclerc, Zodiaq, John',       code:'', team:'Ferrari AF Corse',           cls:'hyper', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Lord Dovante',                code:'', team:'BMW M Team WRT',             cls:'hyper', pts:20, wins:1, pods:1, dnf:0, pos:0, gap:'—', form:['W']},
+      {name:'Jeffz, Lightening, TheOneWhoAsked', code:'', team:'Cadillac Hertz Team Jota', cls:'hyper', pts:0, wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'elijah, Angel, yake',         code:'', team:'Porsche Penske Motorsport', cls:'hyper', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Gasly, vrtx',                 code:'', team:'Alpine Endurance Team',     cls:'hyper', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'TacoMan, vizs',               code:'', team:'Team Peugeot',              cls:'hyper', pts:0,  wins:0, pods:0, dnf:0, pos:0, gap:'—', form:[]},
+      {name:'Gay, 642haj, Marvelfanboy19', code:'', team:'Aston Martin THOR Team', cls:'hyper', pts:17, wins:0, pods:0, dnf:0, pos:0, gap:'—', form:['R']},
+    ],
+    constructors: [
+      /* GT3 manufacturers */
+      {name:'Porsche',      cls:'gt3',  color:'#22c55e', pts:17, pos:0},
+      {name:'BMW',          cls:'gt3',  color:'#e5e7eb', pts:0,  pos:0},
+      {name:'Ferrari',      cls:'gt3',  color:'#dc143c', pts:0,  pos:0},
+      {name:'Mercedes',     cls:'gt3',  color:'#00d2be', pts:0,  pos:0},
+      {name:'McLaren',      cls:'gt3',  color:'#ff8000', pts:0,  pos:0},
+      {name:'Lexus',        cls:'gt3',  color:'#b91c1c', pts:20, pos:0},
+      {name:'Audi',         cls:'gt3',  color:'#f59e0b', pts:0,  pos:0},
+      /* LMP2 — spec category, grouped by team (no distinct manufacturer) */
+      {name:'Taiwanacountry Racing', cls:'lmp2', color:'#60a5fa', pts:0,  pos:0},
+      {name:'Vector Sports',         cls:'lmp2', color:'#f97316', pts:0,  pos:0},
+      {name:'CLX Motorsport',        cls:'lmp2', color:'#3b82f6', pts:0,  pos:0},
+      {name:'G-Drive Racing',        cls:'lmp2', color:'#f43f5e', pts:17, pos:0},
+      {name:'JOTA Sport',            cls:'lmp2', color:'#6366f1', pts:0,  pos:0},
+      {name:'AO Racing',             cls:'lmp2', color:'#facc15', pts:20, pos:0},
+      /* Hypercar / LMDh manufacturers */
+      {name:'Ferrari',      cls:'hyper', color:'#dc143c', pts:0,  pos:0},
+      {name:'BMW',          cls:'hyper', color:'#e5e7eb', pts:20, pos:0},
+      {name:'Aston Martin', cls:'hyper', color:'#22c55e', pts:17, pos:0},
+      {name:'Cadillac',     cls:'hyper', color:'#6366f1', pts:0,  pos:0},
+      {name:'Porsche',      cls:'hyper', color:'#b91c1c', pts:0,  pos:0},
+      {name:'Alpine',       cls:'hyper', color:'#3b82f6', pts:0,  pos:0},
+      {name:'Peugeot',      cls:'hyper', color:'#94a3b8', pts:0,  pos:0},
+    ]
+  },
 };
 
 /* ═══ INFO DATA (teams & drivers per series) ═══ */
@@ -2087,7 +2292,7 @@ const INFO_DATA = {
       ]},
       {name:'Hertz Porsche', engine:'CEO: yake | JHP - ATP CEO', color:'#b91c1c', drivers:[
         {num:'55', code:'MD1', name:'Elijah', pts:0, wins:0, pods:0},
-        {num:'15', code:'MD2', name:'Sun_Rise', pts:0, wins:0, pods:0},
+        {num:'15', code:'MD2', name:'Sunrise', pts:0, wins:0, pods:0},
         {num:'26', code:'MD3', name:'Crocs', pts:0, wins:0, pods:0},
       ]},
       {name:'Aero Apex Racing', engine:'CEO: Flekzy | Aero CEO · Director: Ernesto2013 | AAR Team Director', color:'#7c3aed', drivers:[
@@ -2215,7 +2420,7 @@ const INFO_DATA = {
       {name:'Mercedes-AMG GT3', cls:'gt3', engine:'Mercedes', color:'#00d2be', drivers:[
         {num:'3',  code:'D1', name:'ZRen', pts:0, wins:0, pods:0},
         {num:'14', code:'D2', name:'Penguin', pts:0, wins:0, pods:0},
-        {num:'19', code:'D3', name:'Marvel', pts:0, wins:0, pods:0},
+        {num:'19', code:'D3', name:'Marvelfanboy19', pts:0, wins:0, pods:0},
       ]},
       {name:'United Autosports', cls:'gt3', engine:'Mclaren', color:'#ff8000', drivers:[
         {num:'25', code:'D1', name:'Ogoa', pts:0, wins:0, pods:0},
@@ -2228,6 +2433,11 @@ const INFO_DATA = {
         {num:'14', code:'D3', name:'Daniel', pts:0, wins:0, pods:0},
       ]},
       {name:'Federazione Italiana Automobilistica Roblox', cls:'gt3', engine:'Audi · Team Owner: XTT', color:'#f59e0b', drivers:[]},
+      {name:'AO Racing GT3', cls:'gt3', engine:'Porsche', color:'#facc15', drivers:[
+        {num:'3',  code:'D1', name:'ZRen', pts:0, wins:0, pods:0},
+        {num:'14', code:'D2', name:'Penguin', pts:0, wins:0, pods:0},
+        {num:'19', code:'D3', name:'Marvelfanboy19', pts:0, wins:0, pods:0},
+      ]},
 
       /* ── LMP2 ── */
       {name:'Taiwanacountry Racing', cls:'lmp2', engine:"Team Owner: Taiwanacountry123", color:'#60a5fa', drivers:[
@@ -2252,6 +2462,11 @@ const INFO_DATA = {
         {num:'46', code:'D1', name:'Nicolas', pts:0, wins:0, pods:0},
         {num:'54', code:'D2', name:'Jake', pts:0, wins:0, pods:0},
       ]},
+      {name:'AO Racing', cls:'lmp2', engine:'', color:'#facc15', drivers:[
+        {num:'3',  code:'D1', name:'Neon', pts:0, wins:0, pods:0},
+        {num:'14', code:'D2', name:'wavee', pts:0, wins:0, pods:0},
+        {num:'—',  code:'D3', name:'Oscar', pts:0, wins:0, pods:0},
+      ]},
 
       /* ── LMH / Hypercar ── */
       {name:'Ferrari AF Corse', cls:'lmh', engine:'', color:'#dc143c', drivers:[
@@ -2262,7 +2477,11 @@ const INFO_DATA = {
       {name:'BMW M Team WRT', cls:'lmh', engine:'', color:'#e5e7eb', drivers:[
         {num:'—', code:'D1', name:'Lord Dovante', pts:0, wins:0, pods:0},
       ]},
-      {name:'Aston Martin THOR Team', cls:'lmh', engine:'', color:'#22c55e', drivers:[]},
+      {name:'Aston Martin THOR Team', cls:'lmh', engine:'', color:'#22c55e', drivers:[
+        {num:'69', code:'D1', name:'Gay', pts:0, wins:0, pods:0},
+        {num:'54', code:'D2', name:'642haj', pts:0, wins:0, pods:0},
+        {num:'19', code:'D3', name:'Marvelfanboy19', pts:0, wins:0, pods:0},
+      ]},
       {name:'Cadillac Hertz Team Jota', cls:'lmh', engine:'', color:'#6366f1', drivers:[
         {num:'99', code:'D1', name:'Jeffz', pts:0, wins:0, pods:0},
         {num:'63', code:'D2', name:'Lightening', pts:0, wins:0, pods:0},
@@ -2281,6 +2500,7 @@ const INFO_DATA = {
         {num:'—', code:'D2', name:'TacoMan', pts:0, wins:0, pods:0},
         {num:'—', code:'D3', name:'vizs', pts:0, wins:0, pods:0},
       ]},
+      {name:'Haj AMR Thor Team', cls:'lmh', engine:'LMDh', color:'#16a34a', drivers:[]},
     ]
   },
 };
@@ -2343,7 +2563,7 @@ function navigate(page){
 }
 
 /* ═══ RACE DETAIL ═══ */
-let currentRaceIdx = 0, currentRaceSeries = 'f1', currentEndClass = 'gt3';
+let currentRaceIdx = 0, currentRaceSeries = 'f1', currentEndClass = 'hyper';
 let _cdInterval = null;
 
 // Track art per country flag emoji
@@ -2362,7 +2582,7 @@ function openRaceDetail(raceIdx, series){
   if(!r || r.status==='break') return;
   currentRaceIdx = raceIdx;
   currentRaceSeries = series;
-  currentEndClass = 'gt3';
+  currentEndClass = 'hyper';
 
   const seriesLabels = {f1:'VNFS F1',f2:'VNFS F2',f3:'VNFS F3',end:'VNFS Endurance'};
   const badgeClass   = {f1:'sd-f1',f2:'sd-f2',f3:'sd-f3',end:'sd-end'};
@@ -2889,7 +3109,20 @@ function formDot(f){
   if(f==='R') return `<div class="sf sf-r">R</div>`;
   return `<div class="sf sf-d">—</div>`;
 }
+let currentEndStandingsClass = 'gt3';
 function recalcPositionsAndGaps(series){
+  if(series==='end'){
+    ['gt3','lmp2','hyper'].forEach(cls=>{
+      const d = STANDINGS_DATA.end.drivers.filter(x=>x.cls===cls);
+      d.sort((a,b)=>b.pts-a.pts);
+      const top = d[0]?.pts||0;
+      d.forEach((dr,i)=>{ dr.pos=i+1; dr.gap = i===0?'—':`-${top-dr.pts}`; });
+      const c = STANDINGS_DATA.end.constructors.filter(x=>x.cls===cls);
+      c.sort((a,b)=>b.pts-a.pts);
+      c.forEach((con,i)=>con.pos=i+1);
+    });
+    return;
+  }
   const d = STANDINGS_DATA[series].drivers;
   d.sort((a,b)=>b.pts-a.pts);
   const top = d[0]?.pts||0;
@@ -2898,14 +3131,24 @@ function recalcPositionsAndGaps(series){
   c.sort((a,b)=>b.pts-a.pts);
   c.forEach((con,i)=>con.pos=i+1);
 }
+function showEndStandingsClass(cls, btn){
+  currentEndStandingsClass = cls;
+  document.querySelectorAll('#end-standings-class-tabs .rc-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStandingsForPage('end');
+}
 function renderStandingsForPage(series){
   recalcPositionsAndGaps(series);
   const data = STANDINGS_DATA[series];
   const posC = ['p1','p2','p3'];
   const isAdmin = editMode;
-  document.getElementById('st-board-'+series).innerHTML = data.drivers.length===0
+  const isEnd = series==='end';
+  const cls = isEnd ? currentEndStandingsClass : null;
+  const driverEntries = data.drivers.map((d,idx)=>({d,idx})).filter(o=>!isEnd || o.d.cls===cls).sort((a,b)=>a.d.pos-b.d.pos);
+  const conEntries = data.constructors.map((c,idx)=>({c,idx})).filter(o=>!isEnd || o.c.cls===cls).sort((a,b)=>a.c.pos-b.c.pos);
+  document.getElementById('st-board-'+series).innerHTML = driverEntries.length===0
     ? `<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;">${isAdmin?'No drivers yet — click "+ Add Driver" below.':'No drivers have been added yet.'}</div>`
-    : data.drivers.map((d,i)=>`
+    : driverEntries.map(({d,idx})=>`
     <div class="st-row${d.pos===1?' leader':''} clickable" style="cursor:pointer;" data-driver-name="${d.name}" data-driver-series="${series}" onclick="(function(el,e){if(e.target.closest('button'))return;openDriverProfile(el.dataset.driverName,el.dataset.driverSeries);})(this,event)">
       <div class="st-pos ${posC[d.pos-1]||''}">${d.pos}</div>
       <div><div class="st-dname">${d.name}</div><div class="st-dteam">${d.team}</div></div>
@@ -2914,18 +3157,18 @@ function renderStandingsForPage(series){
       <div class="st-stat">${d.wins}</div>
       <div class="st-stat">${d.pods}</div>
       <div class="st-stat">${d.dnf}</div>
-      ${isAdmin?`<div class="st-admin-btns"><button class="st-edit-btn" onclick="openEditDriver('${series}',${i})">✏️</button><button class="st-del-btn" onclick="deleteDriver('${series}',${i})">🗑</button></div>`:''}
+      ${isAdmin?`<div class="st-admin-btns"><button class="st-edit-btn" onclick="openEditDriver('${series}',${idx})">✏️</button><button class="st-del-btn" onclick="deleteDriver('${series}',${idx})">🗑</button></div>`:''}
     </div>`).join('');
-  const maxPts = data.constructors[0]?.pts||1;
-  document.getElementById('st-con-grid-'+series).innerHTML = data.constructors.length===0
+  const maxPts = conEntries[0]?.c.pts||1;
+  document.getElementById('st-con-grid-'+series).innerHTML = conEntries.length===0
     ? `<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;grid-column:1/-1;">${isAdmin?'No constructors yet — click "+ Add Constructor" below.':'No constructors have been added yet.'}</div>`
-    : data.constructors.map((c,i)=>`
+    : conEntries.map(({c,idx})=>`
     <div class="con-card" style="border-top-color:${c.color};cursor:pointer;" onclick="(function(e){if(e.target.closest('button'))return;openTeamProfile('${c.name.replace(/'/g,"\\'")}','${series}');})(event)">
       <div class="con-pos">${c.pos}</div>
       <div class="con-name">${c.name}</div>
       <div class="con-pts">${c.pts} pts</div>
       <div class="con-bar-wrap"><div class="con-bar" style="width:${Math.round(c.pts/maxPts*100)}%;background:${c.color}"></div></div>
-      ${isAdmin?`<div style="display:flex;gap:6px;margin-top:8px;"><button class="st-edit-btn" onclick="openEditConstructor('${series}',${i})">✏️ Edit</button><button class="st-del-btn" onclick="deleteConstructor('${series}',${i})">🗑 Delete</button></div>`:''}
+      ${isAdmin?`<div style="display:flex;gap:6px;margin-top:8px;"><button class="st-edit-btn" onclick="openEditConstructor('${series}',${idx})">✏️ Edit</button><button class="st-del-btn" onclick="deleteConstructor('${series}',${idx})">🗑 Delete</button></div>`:''}
     </div>`).join('');
 }
 
